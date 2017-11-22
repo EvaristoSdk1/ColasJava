@@ -21,7 +21,7 @@ public class Main extends Application {
 
         launch(args);
 
-        Cola cola = new Cola();
+        /*Cola cola = new Cola();
 
         cola.insertar(1);
         cola.insertar(2);
@@ -41,7 +41,7 @@ public class Main extends Application {
             System.out.println("La cola no esta vacia");
         }else{
             System.out.println("La cola esta vacia");
-        }
+        }*/
 
     }
 }

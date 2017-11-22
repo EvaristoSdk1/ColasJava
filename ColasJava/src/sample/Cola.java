@@ -1,18 +1,17 @@
 package sample;
 
-import javafx.beans.Observable;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Callback;
-
-import java.util.Collection;
 
 /**
  * Created by UchihaMadara on 20/11/2017 0020.
  */
-public class Cola {
+public class Cola{
 
-    private Nodo frente; //el inicio de la cola
+    private Nodo frente;//el inicio de la cola
+
+    Controller controller;
 
     // constructor simple
     public Cola() {
@@ -35,7 +34,7 @@ public class Cola {
     }
 
     //Método para mostrar los elementos de la cola
-    public void mostrar(){
+    public void mostrar( ){
 
         if( frente != null){
             Nodo temp = frente;
@@ -43,15 +42,15 @@ public class Cola {
             System.out.println("Los valores de la cola son: ");
 
             while(temp != null){
-                System.out.println(temp.getValor());
+                //System.out.println(temp.getValor());
                 temp = temp.getProximo();
-                //controller.listElementos.getItems().addAll(temp.getValor());
             }
 
         }else{
             System.out.println("La cola está vacía.");
         }
     }
+
 
     //Método para extraer el elemento del frente
     public int extraer(){

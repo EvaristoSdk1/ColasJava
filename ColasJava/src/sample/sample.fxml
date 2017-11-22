@@ -2,8 +2,7 @@
 
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -30,11 +29,8 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <TableView layoutX="13.0" layoutY="155.0" prefHeight="95.0" prefWidth="477.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-              </columns>
-            </TableView>
+            <ListView fx:id="list" layoutX="13.0" layoutY="196.0" orientation="HORIZONTAL" prefHeight="64.0" prefWidth="467.0" />
+            <Label fx:id="lblDatos" layoutX="268.0" layoutY="100.0" text="Label" />
          </children>
       </AnchorPane>
    </children>
