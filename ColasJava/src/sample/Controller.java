@@ -101,7 +101,7 @@ public class Controller implements Initializable{
                 while (temp != null) {
                     if (temp.getProximo().getValor() == busqueda) {
 
-                        System.out.println("valor en la posicion:" + posicion);
+                        JOptionPane.showMessageDialog(null,"valor en la posicion:" + posicion);
 
                         break;
                     }
