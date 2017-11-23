@@ -5,9 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import sample.interfacez.DatosController;
 import javax.swing.JOptionPane;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,21 +16,15 @@ public class Controller implements Initializable{
 
     @FXML ComboBox listaMenu;
     @FXML ListView <Integer> list;
-    @FXML Label lblDatos;
 
     public Controller() {
         this.frente = null;
     }
 
-    MostrarVentanas mostrarVentanas = new MostrarVentanas();
-    DatosController datosController = new DatosController();
-
     ObservableList<Integer> items1 =FXCollections.observableArrayList();
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
 
         this.listaMenu.getItems().addAll("Insertar Elementos","Mostrar elementos", "Buscar elemento", "Extraer elemento"
                                                     ,"Obtener tamano de la cola", "Vaciar la cola");
@@ -43,30 +35,51 @@ public class Controller implements Initializable{
             switch (value) {
                 case "Insertar Elementos":
 
-                    int rango = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el tamano de elementos de la cola"));
-                    for (int i = 0; i < rango; i++){
-                        int valor = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrse un valor"));
-                        insertar(valor);
-                    }
+                    if  (frente == null){
+                        int rango = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el tamano de elementos de la cola"));
+                        for (int i = 0; i < rango; i++){
+                            int valor = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrse un valor"));
+                            insertar(valor);
+                        }
+                    }else{
+                        int rango = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el tamano de elementos de la cola"));
+                        for (int i = 0; i < rango; i++){
+                            int valor = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrse un valor"));
+                            insertar(valor);
+                        }
 
+                        items1.clear();
+                        list.setItems(items1);
+                        mostrar();
+
+                    }
+                    listaMenu.getSelectionModel().clearSelection();
                     break;
                 case "Mostrar elementos":
-
                     mostrar();
+                    listaMenu.getSelectionModel().clearSelection();
                     break;
                 case "Buscar elemento":
 
                     int buscar = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresar el valor a buscar"));
                     buscar(buscar);
+                    listaMenu.getSelectionModel().clearSelection();
                     break;
                 case "Extraer elemento":
-                    System.out.println("opcion1");
+                    //int extraerNumero = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresar el valor a extraer de la cola"));
+                    items1.clear();
+                    list.setItems(items1);
+                    extraer();
+                    mostrar();
+                    listaMenu.getSelectionModel().clearSelection();
                     break;
                 case "Obtener tamano de la cola":
-                    System.out.println("opcion1");
+                    JOptionPane.showMessageDialog(null,"El tamano de la cola es: " + tamano());
+                    listaMenu.getSelectionModel().clearSelection();
                     break;
                 case "Vaciar la cola":
-                    System.out.println("opcion1");
+                    borrarElementos();
+                    listaMenu.getSelectionModel().clearSelection();
                     break;
                 default: break;
             }
@@ -96,7 +109,7 @@ public class Controller implements Initializable{
             int posicion = 1;
 
             if (temp.getValor() == busqueda) {
-                System.out.println("El valor esta en la posición 0");
+                JOptionPane.showMessageDialog(null,"El valor esta en la posición 0");
             } else {
                 while (temp != null) {
                     if (temp.getProximo().getValor() == busqueda) {
@@ -111,7 +124,7 @@ public class Controller implements Initializable{
         }
         catch (Exception ex)
         {
-            System.out.println("El elemento no se encuentra");
+            JOptionPane.showMessageDialog(null,"El elemento no se encuentra");
         }
     }
 
@@ -119,11 +132,8 @@ public class Controller implements Initializable{
 
         if( frente != null){
             Nodo temp = frente;
-            System.out.println("Los valores de la cola son: ");
 
             while(temp != null){
-
-                System.out.println(temp.getValor());
                 items1.addAll(temp.getValor());
                 temp = temp.getProximo();
             }
@@ -131,8 +141,49 @@ public class Controller implements Initializable{
             list.setItems(items1);
 
         }else{
-            System.out.println("La cola está vacía.");
+            JOptionPane.showMessageDialog(null,"La cola está vacía.");
         }
+    }
+
+    public int extraer(){
+        if(frente == null){
+            return 0;
+        }else{
+            int valorExtraer = frente.getValor(); //variable temporal
+            JOptionPane.showMessageDialog(null,"Valor extraído: "+ frente.getValor());
+            frente = frente.getProximo(); //cambiar el frente por el siguiente
+            return valorExtraer ; //devolver el valor extraído de la cola
+        }
+    }
+
+    public void borrarElementos(){
+        if(vacia() == true){
+            JOptionPane.showMessageDialog(null,"La cola ya esta vacia");
+        }else{
+            while(vacia() == false){
+                frente.getValor();
+                frente = frente.getProximo();
+            }
+            items1.clear();
+            list.setItems(items1);
+            mostrar();
+            JOptionPane.showMessageDialog(null,"La elementos de la cola han sido eliminados");
+        }
+    }
+
+    public int tamano (){
+        Nodo aux = null;
+        int i=0;
+        aux = frente;
+        while(aux != null){
+            aux = aux.getProximo();
+            i++;
+        }
+        return i;
+    }
+
+    public boolean vacia (){
+        return ( frente == null);
     }
 
 }

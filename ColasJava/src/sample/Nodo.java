@@ -21,6 +21,10 @@ public class Nodo {
         this.valor = valor;
     }
 
+    public void Unir(Nodo n) {//Creamos un metodo que nos permite unir los valores ingresados a los nodos
+        proximo = n;
+    }
+
     public void setProximo(Nodo siguiente){
         this.proximo = siguiente;
     }
