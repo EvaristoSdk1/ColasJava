@@ -2,7 +2,7 @@ package sample;
 
 public class Nodo {
 
-    private int valor;
+    private int valor;//valor inicial
     private Nodo proximo; //puntero hacia el siguiente nodo
 
     //Constructor simple, inicializa sin valor
@@ -17,22 +17,22 @@ public class Nodo {
         this.proximo=null;
     }
 
+    //Envia el valor
     public void setValor(int valor){
         this.valor = valor;
     }
 
-    public void Unir(Nodo n) {//Creamos un metodo que nos permite unir los valores ingresados a los nodos
-        proximo = n;
-    }
-
+    //Apunta y enviar el valor al siguiente nodo
     public void setProximo(Nodo siguiente){
         this.proximo = siguiente;
     }
 
+    //Recibe el valor del nodo
     public int getValor(){
         return this.valor;
     }
 
+    //Recibe el valor del siguiente nodo
     public Nodo getProximo(){
         return this.proximo;
     }

@@ -12,178 +12,85 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable{
 
-    private Nodo frente;//el inicio de la cola
+    Cola cola = new Cola();//Variable que nos permitirá acceder a los métodos de la clase Cola
+    @FXML ComboBox listaMenu;//Definimos el nombre del ComboBox del FXML
+    @FXML ListView <Integer> list;//Definimos el nombre del ListView del FXML
 
-    @FXML ComboBox listaMenu;
-    @FXML ListView <Integer> list;
-
-    public Controller() {
-        this.frente = null;
-    }
-
-    ObservableList<Integer> items1 =FXCollections.observableArrayList();
+    ObservableList<Integer> items1 =FXCollections.observableArrayList();//Lista que nos permitirá añadir elementos al ListView
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Definimos las opciones que tendrá el ComboBox
+        this.listaMenu.getItems().addAll("Insertar Elementos", "Mostrar elementos", "Buscar elemento", "Extraer elemento"
+                ,"Obtener tamaño de la cola", "Vaciar la cola");
 
-        this.listaMenu.getItems().addAll("Insertar Elementos","Mostrar elementos", "Buscar elemento", "Extraer elemento"
-                                                    ,"Obtener tamano de la cola", "Vaciar la cola");
-
-        //listaMenu.getSelectionModel().select(0);
+        //Nos permitirá saber que opción eligió el usuario
         listaMenu.setOnAction(event -> {
-            String value = (String) listaMenu.getValue();
-            switch (value) {
-                case "Insertar Elementos":
 
-                    if  (frente == null){
-                        int rango = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el tamano de elementos de la cola"));
-                        for (int i = 0; i < rango; i++){
-                            int valor = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrse un valor"));
-                            insertar(valor);
+            //Variable que compara la decisión del usuario con las opción predefinidas
+            String value = (String) listaMenu.getValue();
+
+            switch (value) {
+                case "Insertar Elementos"://Si el usuario elige insertar datos en la cola
+
+                    if  (cola.frente == null){//Si la cola esta vacía
+                        //Pregunta al usuario la cantidad de elementos que  desea insertar y el valor se lo pasa a la variable Rango
+                        int rango = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el tamaño de elementos de la cola"));
+                        for (int i = 0; i < rango; i++){//Repite el método de insertar elementos, dependiendo dl rango establecido por el usuario
+                            int valor = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese un valor"));
+                            cola.insertar(valor);//Llamamos el método de insertar y le pasamos el valor de la variable "valor"
                         }
                     }else{
-                        int rango = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el tamano de elementos de la cola"));
-                        for (int i = 0; i < rango; i++){
-                            int valor = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrse un valor"));
-                            insertar(valor);
+                        //Pregunta al usuario la cantidad de elementos que  desea insertar y el valor se lo pasa a la variable Rango
+                        int rango = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el tamaño de elementos de la cola"));
+                        for (int i = 0; i < rango; i++){//Repite el método de insertar elementos, dependiendo dl rango establecido por el usuario
+                            int valor = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingrese un valor"));
+                            cola.insertar(valor);//Llamamos el método de insertar y le pasamos el valor de la variable "valor"
                         }
 
-                        items1.clear();
-                        list.setItems(items1);
-                        mostrar();
+                        items1.clear();//Limpia la lista
+                        list.setItems(items1);//Le pasa la lista vacía al ListView
+                        cola.mostrar(items1, list);//Llamamos al método mostrar de la clase Cola y le pasamos los datos actualizados a la lista y al ListView
 
                     }
-                    listaMenu.getSelectionModel().clearSelection();
+                    listaMenu.getSelectionModel().clearSelection();//Limpia la selección del ComboBox
                     break;
-                case "Mostrar elementos":
-                    mostrar();
-                    listaMenu.getSelectionModel().clearSelection();
-                    break;
-                case "Buscar elemento":
 
+                case "Mostrar elementos"://Si el usuario elige mostrar los elementos
+                    cola.mostrar(items1, list);//Llamamos al método mostrar y le pasamos los elementos al ListView
+                    listaMenu.getSelectionModel().clearSelection();//Limpia la selección del ComboBox
+                    break;
+                case "Buscar elemento"://Si el usuario elige buscar un elemento
+                    //Le preguntamos al usuario el elemento que desea buscar y le pasamos el valor a la variable buscar
                     int buscar = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresar el valor a buscar"));
-                    buscar(buscar);
-                    listaMenu.getSelectionModel().clearSelection();
+                    cola.buscar(buscar);//Llamamos al método buscar de la clase Cola y le pasamos el valor de la variable buscar
+                    listaMenu.getSelectionModel().clearSelection();//Limpia la selección del ComboBox
                     break;
-                case "Extraer elemento":
-                    //int extraerNumero = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresar el valor a extraer de la cola"));
-                    items1.clear();
-                    list.setItems(items1);
-                    extraer();
-                    mostrar();
-                    listaMenu.getSelectionModel().clearSelection();
+
+                case "Extraer elemento"://Si el usuario elige eliminar un valor de la cola
+
+                    items1.clear();//Limpia la lista
+                    list.setItems(items1);//y le pasa esa lista vacía al ListView
+                    cola.extraer();//Llamamos al método extraer de la clase Cola
+                    cola.mostrar(items1, list);//Llamamos al método mostrar y le pasamos el  nombre de la lista y del ListView
+                    listaMenu.getSelectionModel().clearSelection();//Limpia la selección del ComboBox
                     break;
-                case "Obtener tamano de la cola":
-                    JOptionPane.showMessageDialog(null,"El tamano de la cola es: " + tamano());
-                    listaMenu.getSelectionModel().clearSelection();
+
+                case "Obtener tamaño de la cola"://Si el usuario quiere saber el tamaño de la cola
+                    //Llamamos al método tamaño de la Clase Cola y lo mostramos por un mensaje en pantalla
+                    JOptionPane.showMessageDialog(null,"El tamaño de la cola es: " + cola.tamano());
+                    listaMenu.getSelectionModel().clearSelection();//Limpia la selección del ComboBox
                     break;
-                case "Vaciar la cola":
-                    borrarElementos();
-                    listaMenu.getSelectionModel().clearSelection();
+
+                case "Vaciar la cola"://Si el usuario elige eliminar completamente los elementos de la cola
+                    //Llamamos al método borrar elementos y le pasamos el nombre de lista y del ListView
+                    cola.borrarElementos(items1, list);
+                    listaMenu.getSelectionModel().clearSelection();//Limpia la selección del ComboBox
                     break;
+
                 default: break;
             }
         });
+
     }
-
-    //Método para insertar siguiente elemento (nodo), el elemento debe colocarse detrás del último nodo
-    public void insertar(int valor){
-        Nodo nuevo = new Nodo(valor);
-
-        if(frente == null){
-            frente = nuevo;
-        }else{
-            Nodo temp = frente;
-            while(temp.getProximo() != null){
-                temp = temp.getProximo();
-            }
-            temp.setProximo(nuevo);
-        }
-    }
-
-
-    public void buscar(int busqueda) {
-
-        try {
-            Nodo temp = frente;
-            int posicion = 1;
-
-            if (temp.getValor() == busqueda) {
-                JOptionPane.showMessageDialog(null,"El valor esta en la posición 0");
-            } else {
-                while (temp != null) {
-                    if (temp.getProximo().getValor() == busqueda) {
-
-                        JOptionPane.showMessageDialog(null,"valor en la posicion:" + posicion);
-
-                        break;
-                    }
-                    posicion++;
-                    temp = temp.getProximo();
-                }}
-        }
-        catch (Exception ex)
-        {
-            JOptionPane.showMessageDialog(null,"El elemento no se encuentra");
-        }
-    }
-
-    public void mostrar(){
-
-        if( frente != null){
-            Nodo temp = frente;
-
-            while(temp != null){
-                items1.addAll(temp.getValor());
-                temp = temp.getProximo();
-            }
-
-            list.setItems(items1);
-
-        }else{
-            JOptionPane.showMessageDialog(null,"La cola está vacía.");
-        }
-    }
-
-    public int extraer(){
-        if(frente == null){
-            return 0;
-        }else{
-            int valorExtraer = frente.getValor(); //variable temporal
-            JOptionPane.showMessageDialog(null,"Valor extraído: "+ frente.getValor());
-            frente = frente.getProximo(); //cambiar el frente por el siguiente
-            return valorExtraer ; //devolver el valor extraído de la cola
-        }
-    }
-
-    public void borrarElementos(){
-        if(vacia() == true){
-            JOptionPane.showMessageDialog(null,"La cola ya esta vacia");
-        }else{
-            while(vacia() == false){
-                frente.getValor();
-                frente = frente.getProximo();
-            }
-            items1.clear();
-            list.setItems(items1);
-            mostrar();
-            JOptionPane.showMessageDialog(null,"La elementos de la cola han sido eliminados");
-        }
-    }
-
-    public int tamano (){
-        Nodo aux = null;
-        int i=0;
-        aux = frente;
-        while(aux != null){
-            aux = aux.getProximo();
-            i++;
-        }
-        return i;
-    }
-
-    public boolean vacia (){
-        return ( frente == null);
-    }
-
 }
